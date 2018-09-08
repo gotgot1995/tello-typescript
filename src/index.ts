@@ -1,8 +1,8 @@
-// greeter.ts
-function greeter(person: string) {
-    return `Hello ${person}!`
-}
-  
-const nickname = 'Gautier'
-  
-console.log(greeter(nickname))
+import LogitechJoystick from "./domain/logitech";
+import RemoteControl from "./domain/RemoteControl";
+
+let attack3 = new LogitechJoystick();
+
+let observer = new RemoteControl();
+
+attack3.registerObserver(observer);
