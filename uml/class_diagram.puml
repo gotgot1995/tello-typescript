@@ -1,0 +1,34 @@
+@startuml
+hide empty members
+
+package "github.com/nodebits/linux-joystick" {
+    class Joystick
+}
+
+interface IObservable {
+    + registerObserver(observer : IObserver)
+    + removeObserver(observer : IObserver)
+    + notify(event: AppEvent)
+}
+
+interface IObserver {
+    + receiveNotification()
+}
+
+'app entities
+class LogitechJoystick implements IObservable {
+    + calibrate()
+    + notify()
+    + registerObserver(observer: Observer)
+    + removeObserver(observer: Observer)
+}
+
+class RemoteControl implements IObserver {
+
+}
+
+'relations
+Joystick <.. LogitechJoystick
+RemoteControl -- LogitechJoystick
+
+@enduml
