@@ -1,10 +1,10 @@
 import Observer from "../interfaces/IObserver";
-import ShotEvent from "./events/ShotEvent";
-import SpinLeftEvent from "./events/SpinLeftEvent";
-import SpinRightEvent from "./events/SpinRightEvent";
-import AppEvent from "./events/AppEvent";
+import ShotEvent from "../domain/events/ShotEvent";
+import SpinLeftEvent from "../domain/events/SpinLeftEvent";
+import SpinRightEvent from "../domain/events/SpinRightEvent";
+import AppEvent from "../domain/events/AppEvent";
 
-class RemoteControl implements Observer {
+class RemoteControlService implements Observer {
     public receiveNotification(event: AppEvent): void {
         if(event instanceof ShotEvent) {
             console.log("Taking shot...");
@@ -16,4 +16,4 @@ class RemoteControl implements Observer {
     }
 }
 
-export default RemoteControl;
+export default RemoteControlService;

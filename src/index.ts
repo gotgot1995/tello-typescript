@@ -1,8 +1,11 @@
 import LogitechJoystick from "./domain/logitech";
-import RemoteControl from "./domain/RemoteControl";
+import RemoteControlService from "./services/RemoteControlService";
+import UdpService from "./services/UdpService";
 
-let attack3 = new LogitechJoystick();
+// let attack3 = new LogitechJoystick();
 
-let observer = new RemoteControl();
+// let observer = new RemoteControlService();
 
-attack3.registerObserver(observer);
+// attack3.registerObserver(observer);
+
+let service = new UdpService();
