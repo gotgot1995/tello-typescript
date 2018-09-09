@@ -16,15 +16,25 @@ interface IObserver {
 }
 
 'app entities
-class LogitechJoystick implements IObservable {
-    + calibrate()
-    + notify()
-    + registerObserver(observer: Observer)
-    + removeObserver(observer: Observer)
+
+package "domain" {
+    class LogitechJoystick implements IObservable {
+        + calibrate()
+        + notify()
+        + registerObserver(observer: Observer)
+        + removeObserver(observer: Observer)
+    }
 }
 
-class RemoteControl implements IObserver {
+package "service" {
+    class UdpService <<Singleton>> {
+        + getInstance() : UdpService
+        + send(msg : string, addr : string, port : int)
+    }
 
+    class RemoteControl implements IObserver {
+
+    }
 }
 
 'relations
