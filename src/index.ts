@@ -8,4 +8,5 @@ import UdpService from "./services/UdpService";
 
 // attack3.registerObserver(observer);
 
-let service = new UdpService();
+let udp_service = UdpService.getInstance();
+udp_service.listen();
