@@ -1,12 +1,12 @@
 import * as dgram from 'dgram';
+import AppConfig from '../tools/AppConfig';
 
 class UdpService {
     private static instance = null;
 
     private server;
-    private local_port = 9000;
-    // private tello_port = 8889;
-    private server_socket;
+
+    private client_socket;
 
     private constructor(){
         if (UdpService.instance) {
@@ -19,7 +19,10 @@ class UdpService {
             const addr = this.server.address();
             console.log(`UDP server listening on ${addr.address}:${addr.port}`);
         });
-        this.server_socket = dgram.createSocket('udp4');
+
+        this.client_socket = dgram.createSocket('udp4');
+        this.client_socket.bind();
+        this.client_socket.on('message', (msg) => console.log(`resp: ${msg}`));
     }
 
     public static getInstance = () : UdpService => {
@@ -32,11 +35,11 @@ class UdpService {
     }
 
     private onMessage = (msg: string, rinfo: any) => {
-        console.log(`UDP server got: ${msg} from ${rinfo.address}:${rinfo.port}`);
+        // console.log(`UDP server got: ${msg} from ${rinfo.address}:${rinfo.port}`);
     }
 
     public listen = () => {
-        this.server.bind(this.local_port);
+        this.server.bind(AppConfig.LISTEN_UDP_PORT);
     }
 
     public close = () => {
@@ -44,9 +47,10 @@ class UdpService {
     }
 
     public send = (msg : string, addr : string, port : number) => {
-        this.server_socket.send(Buffer.from(`Echo: ${msg}`), port, addr, (err) => {
-            if(err !== null && err !== undefined)
-                console.log(err);
+        this.client_socket.send(Buffer.from(`${msg}`), port, addr, (err) => {
+            if(err) {
+                console.error(err);
+            }
         });
     }
 }

@@ -1,24 +1,27 @@
 @startuml
+
 hide empty members
 
 package "github.com/nodebits/linux-joystick" {
     class Joystick
 }
 
-interface IObservable {
-    + registerObserver(observer : IObserver)
-    + removeObserver(observer : IObserver)
-    + notify(event: AppEvent)
-}
+package "interfaces" {
+    interface IObservable {
+        + registerObserver(observer : IObserver)
+        + removeObserver(observer : IObserver)
+        + notify(event: AppEvent)
+    }
 
-interface IObserver {
-    + receiveNotification()
+    interface IObserver {
+        + receiveNotification(event : AppEvent)
+    }
 }
 
 'app entities
 
 package "domain" {
-    class LogitechJoystick implements IObservable {
+    class LogitechJoystick <<Observable>> implements IObservable {
         + calibrate()
         + notify()
         + registerObserver(observer: Observer)
@@ -32,13 +35,14 @@ package "service" {
         + send(msg : string, addr : string, port : int)
     }
 
-    class RemoteControl implements IObserver {
-
+    class RemoteControl <<Singleton>> implements IObserver {
+        + receiveNotification(event : AppEvent)
     }
 }
 
 'relations
-Joystick <.. LogitechJoystick
-RemoteControl -- LogitechJoystick
+Joystick "<<using>>" <.. LogitechJoystick
+RemoteControl "<<using>>" ..> LogitechJoystick
+RemoteControl ..> "<<using>>" UdpService
 
 @enduml
