@@ -1,12 +1,7 @@
 import * as Joystick from "./joystick";
 import IObservable from "../interfaces/IObservable";
 import IObserver from "../interfaces/IObserver";
-import AppEvent from "./events/AppEvent";
-import ShotEvent from "./events/ShotEvent";
-import SpinLeftEvent from "./events/SpinLeftEvent";
-import SpinRightEvent from "./events/SpinRightEvent";
-import LandingEvent from "./events/LandingEvent";
-import TakeOffEvent from "./events/TakeOffEvent";
+import AppEvent from "./events";
 
 class LogitechJoystick implements IObservable {
     // My infrastructure properties
@@ -42,19 +37,19 @@ class LogitechJoystick implements IObservable {
             switch(message.number){
                 // shoot button
                 case 0:
-                    this.notify(new ShotEvent());
+                    this.notify(AppEvent.SHOT_EVENT);
                     break;
                 case 1:
-                    this.notify(new LandingEvent());
+                    this.notify(AppEvent.LANDING);
                     break;
                 case 2:
-                    this.notify(new TakeOffEvent());
+                    this.notify(AppEvent.TAKE_OFF);
                     break;
                 case 3:
-                    this.notify(new SpinLeftEvent());
+                    this.notify(AppEvent.SPIN_LEFT);
                     break;
                 case 4:
-                    this.notify(new SpinRightEvent());
+                    this.notify(AppEvent.SPIN_RIGHT);
                     break;
                 default:
                     console.log(message);

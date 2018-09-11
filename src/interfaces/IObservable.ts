@@ -1,5 +1,5 @@
 import IObserver from "./IObserver";
-import AppEvent from "../domain/events/AppEvent";
+import AppEvent from "../domain/events";
 
 interface IObservable {
     registerObserver(observer: IObserver)

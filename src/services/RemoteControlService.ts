@@ -1,12 +1,7 @@
-import AppEvent from "../domain/events/AppEvent";
-import ShotEvent from "../domain/events/ShotEvent";
-import SpinLeftEvent from "../domain/events/SpinLeftEvent";
-import SpinRightEvent from "../domain/events/SpinRightEvent";
 import IObserver from "../interfaces/IObserver";
 import UdpService from "./UdpService";
-import TakeOffEvent from "../domain/events/TakeOffEvent";
-import LandingEvent from "../domain/events/LandingEvent";
 import AppConfig from "../tools/AppConfig";
+import AppEvent from "../domain/events";
 
 class RemoteControlService implements IObserver {
     private static instance;
@@ -21,21 +16,29 @@ class RemoteControlService implements IObserver {
         return RemoteControlService.instance || new RemoteControlService();
     }
 
-    public receiveNotification = (event: AppEvent): void => {
-        if(event instanceof ShotEvent) {
-            console.log("Taking shot...");
-        } else if (event instanceof SpinLeftEvent){
-            console.log("Spinning left...");
-        } else if (event instanceof SpinRightEvent){
-            console.log("Spinning right...")
-        } else if (event instanceof TakeOffEvent) {
-            console.log("Take-off...");
-            const udp_service = UdpService.getInstance();
-            udp_service.send("takeoff", AppConfig.TELLO_ADDR, AppConfig.TELLO_PORT);
-        } else if (event instanceof LandingEvent) {
-            console.log("Landing...");
-            const udp_service = UdpService.getInstance();
-            udp_service.send("land", AppConfig.TELLO_ADDR, AppConfig.TELLO_PORT);
+    public receiveNotification = (event: AppEvent) : void => {
+        const udpService = UdpService.getInstance();
+
+        switch(event) {
+            case AppEvent.TAKE_OFF:
+                console.log("Take-off...");
+                udpService.send("takeoff", AppConfig.TELLO_ADDR, AppConfig.TELLO_PORT);
+                break;
+            case AppEvent.LANDING:
+                console.log("Landing...");
+                udpService.send("land", AppConfig.TELLO_ADDR, AppConfig.TELLO_PORT);
+                break;
+            case AppEvent.SHOT_EVENT:
+                break;
+            case AppEvent.SPIN_LEFT:
+                console.log("Spinning left...");
+                break;
+            case AppEvent.SPIN_RIGHT:
+                console.log("Spinning right...");
+                break;
+            default:
+                console.warn("Unknown event", event);
+                break;
         }
     }
 }

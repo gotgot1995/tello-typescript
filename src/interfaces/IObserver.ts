@@ -1,5 +1,7 @@
+import AppEvent from "../domain/events";
+
 interface IObserver {
-    receiveNotification<T>(message: T): void
+    receiveNotification(event: AppEvent): void
 }
 
 export default IObserver;
