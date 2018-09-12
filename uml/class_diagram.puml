@@ -27,6 +27,12 @@ package "domain" {
         + registerObserver(observer: Observer)
         + removeObserver(observer: Observer)
     }
+
+    enum AppEvent{
+
+    }
+
+    AppEvent "<<using>>" <.. LogitechJoystick
 }
 
 package "service" {
@@ -41,7 +47,7 @@ package "service" {
 }
 
 'relations
-Joystick "<<using>>" <.. LogitechJoystick
+Joystick "<<using>>" <... LogitechJoystick
 RemoteControl "<<using>>" ..> LogitechJoystick
 RemoteControl ..> "<<using>>" UdpService
 

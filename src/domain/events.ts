@@ -3,7 +3,8 @@ enum AppEvent {
     LANDING,
     SHOT_EVENT,
     SPIN_LEFT,
-    SPIN_RIGHT
+    SPIN_RIGHT,
+    AXIS_CHANGED
 }
 
 export default AppEvent;

@@ -36,6 +36,9 @@ class RemoteControlService implements IObserver {
             case AppEvent.SPIN_RIGHT:
                 console.log("Spinning right...");
                 break;
+            case AppEvent.AXIS_CHANGED:
+                console.log("Move...")
+                break;
             default:
                 console.warn("Unknown event", event);
                 break;

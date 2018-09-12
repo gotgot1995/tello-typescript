@@ -3,10 +3,24 @@ import IObservable from "../interfaces/IObservable";
 import IObserver from "../interfaces/IObserver";
 import AppEvent from "./events";
 
+enum AxisCalibration {
+    X_AXIS_MIN = -32767,
+    X_AXIS_MAX = 32767,
+    Y_AXIS_MIN = -32767,
+    Y_AXIS_MAX = 32767
+}
+
 class LogitechJoystick implements IObservable {
+    public static AxisCalibration = { MIN : -32767, MAX : 32767 };
+
     // My infrastructure properties
     private observers = []
     private joystick;
+    private forward = 0;
+    private backward = 0;
+    private left = 0;
+    private right = 0;
+
 
     public constructor(){
         this.joystick = new Joystick(0);
@@ -58,9 +72,28 @@ class LogitechJoystick implements IObservable {
         }
     }
 
-    private handleAxisEvent(message: object){
+    private handleAxisEvent = (message: any) : void => {
         // do nothing
+        const value = message.value;
+        const percentage = Math.abs(value / AxisCalibration.X_AXIS_MAX);
+        if(message.number === 0) {
+            if(value > 0){
+                this.right = percentage;
+            } else if (value > 0) {
+                this.left = percentage;
+            }
+            console.log(`X axis: ${message.value / AxisCalibration.X_AXIS_MAX * 100}%`);
+        } else if (message.number === 1) {
+            console.log(`Y axis: ${message.value / AxisCalibration.Y_AXIS_MAX * 100}%`);
+        }
+        this.notify(AppEvent.AXIS_CHANGED);
     };
+
+    public calibrate = () : Promise<any> => {
+        return new Promise((resolve, reject) => {
+            
+        });
+    }
 }
 
 export default LogitechJoystick;
